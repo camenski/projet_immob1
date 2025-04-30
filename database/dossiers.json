@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "Maison Moderne",
+        "type": "acheter",
+        "prix": 300000,
+        "adresse": "123 Rue de Paris",
+        "description": "Maison moderne avec jardin et piscine.",
+        "photos": ["photo1.jpg", "photo2.jpg"],
+        "proprietaire": "John Doe"
+    },
+    {
+        "id": 2,
+        "name": "Appartement en Ville",
+        "type": "louer",
+        "prix": 1200,
+        "adresse": "456 Avenue des Champs, Paris",
+        "description": "Appartement spacieux, bien situé.",
+        "photos": ["photo3.jpg", "photo4.jpg"],
+        "proprietaire": "Jane Smith"
+    }
+]

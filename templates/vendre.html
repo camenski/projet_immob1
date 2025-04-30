@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnalisation - Location</title>
+    <link rel="stylesheet" href="/static/css/vendre.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+
+            <div class="social-icons">
+                <img src="/static/pack photo/logo.png" alt="FIA Immobilier Logo" width="129px" height="90px">
+                <span class="volet">
+                    <a href="/templates/personnaliser_achat.html">Acheter</a>
+                    <a href="/templates/personnaliser_location.html">Louer</a>
+                    <a href="/templates/vendre.html">Vendre</a>
+                    <a href="/templates/annonces.html">Annonces</a>
+                    <a href="/templates/agents.html">Agents</a>
+                </span>
+            </div>
+            <div class="auth-buttons">
+                <div class="menu-propriétés">
+                    <ul>
+                        <li class="menu-deroulant">
+                            <a href="#">Propriétés</a>
+                            <ul class="sous-menu">
+                                <li><a href="/templates/all_properties.html">Toutes</a></li>
+                                <li><a href="/templates/a_vendre.html">Achat</a></li>
+                                <li><a href="/templates/a_louer.html">Location</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="onglet">
+                    <ul>
+                        <li class="onglet-deroulant">
+                            <a href="#">☰</a>
+                            <ul class="sous-onglet">
+                                <li><a href="/index">Accueil</a></li>
+                                <li><a href="/templates/all_properties.html">Propriétés</a></li>
+                                <li><a href="/templates/dossiers.html">Dossier Immobilier</a></li>
+                                <li><a href="/templates/investissements.html">Investissement</a></li>
+                                <li><a href="/templates/contact.html">Contact</a></li>
+                                <li><a href="/templates/apropos.html">A propos de nous</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul>
+                    <li><a href="/templates/estimation.html" class="estimate-button"><i class="fas fa-coins"></i> Estimer votre bien</a></li>
+                    <li><a href="#"><i class="fas fa-heart"></i> Ma sélection</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Mon compte</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="sell-container">
+             <img src="/static/pack photo/tof1.avif" alt="">
+              <h1>Vendez votre propriété facilement !</h1> 
+              <p>Remplissez ce formulaire pour publier votre annonce.</p> 
+              <form class="sell-form"> <label>Nom du bien</label> 
+                <input type="text" placeholder="Ex : Appartement 3 pièces, Cocody" required> 
+                <label>Type de bien</label> 
+                <select required class="bimm"> 
+                    <option value="maison">Maison</option> 
+                    <option value="appartement">Appartement</option> 
+                    <option value="terrain">Terrain</option>
+                    <option value="villa">Villa</option> 
+                    </select> <label>Prix (en FCFA)</label> 
+                    <input type="number" placeholder="Ex : 250 000 000" required> 
+                    <label>Localisation</label> 
+                    <input type="text" placeholder="Ex : Riviera 3, Abidjan" required> 
+                    <label>Ajouter des photos</label> 
+                    <input type="file" multiple required> 
+                    <label>Description du bien</label> 
+                    <textarea placeholder="Décrivez brièvement votre bien..." required></textarea> 
+                    <button type="submit">Publier l'annonce</button> 
+                </form> 
+        </div>
+    </div>
+</body>
+
+</html>

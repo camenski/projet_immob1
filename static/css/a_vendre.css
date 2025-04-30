@@ -1,0 +1,457 @@
+:root {
+    --hauteur-menu: 60px;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+
+/* 💠 Barre de navigation */
+
+header {
+    height: 100px;
+    background-color: #fff;
+}
+
+nav {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.logo img {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-left: 50px;
+}
+
+.social-icons {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    margin-right: 30px;
+    /* Ajuste selon l’espace voulu */
+    /* Augmente l’espace entre eux */
+}
+
+.volet {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.social-icons a {
+    list-style: none;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    font-style: italic;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 5px;
+    color: #2348C2;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: #2348C2;
+    font-weight: bold;
+}
+
+.estimate-button {
+    background-color: #1E9EE3;
+    padding: 10px 15px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.menu-propriétés {
+    font-size: 18px;
+    position: relative;
+    top:30px;
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    margin-bottom: 50px;
+   
+}
+
+.menu-propriétés>ul {
+    display: flex;
+    text-align: center;
+    height: var(--hauteur-menu);
+}
+
+.menu-propriétés ul {
+    list-style-type: none;
+}
+
+.menu-propriétés>ul>li {
+    position: relative;
+    height: 100%;
+    flex: 1;
+}
+
+.menu-propriétés>ul>li>a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+li a {
+    text-decoration: none;
+    color: #2348C2;
+}
+
+.menu-deroulant>a:after {
+    content: '❯';
+    font-size: 15px;
+    margin-left: 7px;
+    display: inline-block;
+}
+
+.sous-menu {
+    margin-top: var(--hauteur-menu);
+    width: 100%;
+    text-align: left;
+    background-color: white;
+    border-radius: 2px;
+    overflow: hidden;
+    max-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 20; /* Fait passer le sous-menu devant tout */
+}
+
+.sous-menu>li>a {
+    height: 50px;
+    padding-left: 20px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.menu-propriétés>ul>li:hover>a {
+    color: black;
+}
+
+.sous-menu>li:hover {
+    background-color: rgba(33, 105, 236, 0.3);
+}
+
+.sous-menu>li:hover>a {
+    color: white;
+}
+
+.menu-deroulant li {
+    font-size: 14px; 
+    padding: 8px 12px;
+    width: 150px;
+}
+
+
+@keyframes rotationFleche {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(90deg);
+    }
+}
+
+.menu-deroulant:hover>a:after {
+    animation: rotationFleche 0.2s linear forwards;
+}
+
+@keyframes apparitionSousMenu {
+    0% {
+        box-shadow: 0px 3px 3px 1px rgba(0, 0, 0, 0);
+        border-top: 3px solid #2169EC;
+    }
+    30% {
+        box-shadow: 0px 3px 3px 1px rgba(0, 0, 0, 0.3);
+    }
+    100% {
+        max-height: 50em;
+        border-top: 3px solid #2169EC;
+        box-shadow: 0px 3px 3px 1px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.menu-deroulant:hover>.sous-menu {
+    animation: apparitionSousMenu 1s forwards;
+}
+
+.auth-buttons {
+
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+}
+
+.onglet {
+    font-size: 18px;
+    position: relative;
+    top: 30px;
+    width: 200px;
+    height: 50px;
+    padding: 20px;
+    margin-bottom: 50px;
+    z-index: 1000;
+}
+
+.onglet>ul {
+    display: flex;
+    text-align: center;
+    height: var(--hauteur-menu);
+}
+
+.onglet ul {
+    list-style-type: none;
+}
+
+.onglet>ul>li {
+    position: relative;
+    height: 100%;
+    flex: 1;
+}
+
+.onglet>ul>li>a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+li a {
+    text-decoration: none;
+    color: #2348C2;
+}
+
+.onglet-deroulant>a:after {
+    content: '❯';
+    font-size: 15px;
+    margin-left: 7px;
+    display: inline-block;
+}
+
+.sous-onglet {
+    margin-top: var(--hauteur-menu);
+    width: 100%;
+    text-align: left;
+    background-color: white;
+    border-radius: 2px;
+    overflow: hidden;
+    max-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+}
+
+.sous-onglet>li>a {
+    height: 50px;
+    padding-left: 20px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.onglet>ul>li:hover>a {
+    color: black;
+}
+
+.sous-onglet>li:hover {
+    background-color: rgba(33, 105, 236, 0.3);
+}
+
+.sous-onglet>li:hover>a {
+    color: white;
+}
+
+@keyframes rotationFleche {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(90deg);
+    }
+}
+
+.onglet-deroulant:hover>a:after {
+    animation: rotationFleche 0.2s linear forwards;
+}
+
+@keyframes apparitionSousMenu {
+    0% {
+        box-shadow: 0px 3px 3px 1px rgba(0, 0, 0, 0);
+        border-top: 3px solid #2169EC;
+    }
+    30% {
+        box-shadow: 0px 3px 3px 1px rgba(0, 0, 0, 0.3);
+    }
+    100% {
+        max-height: 50em;
+        border-top: 3px solid #2169EC;
+        box-shadow: 0px 3px 3px 1px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.onglet-deroulant:hover>.sous-onglet {
+    animation: apparitionSousMenu 1s forwards;
+}
+
+.banner {
+    position: relative; /* Permet de superposer le texte sur l’image */
+    width: 100%;
+    height: 25vh; /* Ajuste la hauteur */
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    margin-bottom: 30px;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(30%); /* Assombrit l’image */
+    position: relative;
+}
+
+.banner h1 {
+    position: absolute;
+    color: white; /* Rend le texte visible sur le fond sombre */
+    font-size: 36px; /* Ajuste la taille du texte */
+    font-family: 'Inter', sans-serif; /* Utilise une belle police */
+    font-weight: 600; /* Semi Bold */
+    line-height: 1.5; /* Extra espace entre les lignes */
+    text-align: center;
+}
+
+/* 📌 Section des propriétés */
+.property-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colonnes sur la première ligne */
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.property:nth-child(n+5) {
+    grid-column: span 4; /* Les éléments après le 4e passent sur une nouvelle ligne */
+    display: flex;
+    flex-direction: column; /* Organise verticalement */
+}
+
+.property img {
+    width: 80%; /* Réduit la largeur à 80% de son conteneur */
+    height: 150px; /* Diminue la hauteur */
+    object-fit: cover; /* Assure un rendu homogène sans déformation */
+}
+
+h2 {
+    font-size: 13px;
+    color: #1E9EE3;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+}
+
+.favorite-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #bbb; /* Gris par défaut */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.favorite-icon:hover {
+    color: red; /* Devient rouge au survol */
+}
+
+.property {
+    position: relative; /* Permet de positionner l’icône */
+}
+
+
+
+
+
+.footer {
+    background-color: #0D16C0;
+    /* Couleur bleue personnalisée */
+    color: white;
+    padding: 30px 20px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* Garde la flexibilité */
+    gap: 40px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.footer-section {
+    flex: 1;
+}
+
+.footer-section h3 {
+    margin-bottom: 15px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin: 5px 0;
+}
+
+.footer-section a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.footer-section p {
+    margin: 5px 0;
+}
+
+.footer-section i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+}

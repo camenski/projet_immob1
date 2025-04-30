@@ -1,0 +1,16 @@
+[
+    {
+        "nom": "Sophie Martin",
+        "poste": "Conseillère immobilière",
+        "email": "sophie@agence.com",
+        "telephone": "06 01 02 03 04",
+        "photo": "sophie.jpg"
+    },
+    {
+        "nom": "Alexandre Dupont",
+        "poste": "Responsable des ventes",
+        "email": "alexandre@agence.com",
+        "telephone": "06 05 06 07 08",
+        "photo": "alexandre.jpg"
+    }
+]

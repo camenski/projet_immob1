@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">Nos Agents</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for agent in agents %}
+    <div class="bg-white rounded-xl shadow-md p-4">
+        <img src="/static/images/agents/{{ agent.photo }}" alt="{{ agent.nom }}" class="rounded-full w-32 h-32 mx-auto mb-4 object-cover">
+        <h2 class="text-xl font-semibold text-center">{{ agent.nom }}</h2>
+        <p class="text-center text-gray-600">{{ agent.poste }}</p>
+        <p class="text-center text-sm mt-2">{{ agent.email }}</p>
+        <p class="text-center text-sm">{{ agent.telephone }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

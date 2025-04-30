@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link rel="stylesheet" href="/static/css/register.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Inria+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+</head>
+
+<body>
+    <div class="header-image">
+        <img src="/static/pack photo/logo.png" alt="FIA Immobilier" class="logo-entreprise">
+    </div>
+    <div class="container">
+        <div class="left-section">
+            <h1>Vendez, achetez, louez... en toute sécurité.</h1>
+        </div>
+        <div class="right-section">
+            <div class="register-form">
+                <h2>Créer un nouveau compte</h2>
+                <form action="/register" method="post" enctype="application/x-www-form-urlencoded">                    <input type="text" id="username" name="username" placeholder="Nom complet" required>
+                    <input type="email" id="email" name="email" placeholder="E-mail" required>
+                    <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+                    <input type="password" id="confirme_password" name="confirme_password" placeholder="Confirmer le mot de passe" required>
+                    <button type="submit" class="register-btn">S'inscrire</button>
+                </form>
+                <div class="align-horizontal">
+                    <p>Vous avez déjà un compte?</p>
+                    <p><a href="/login"> Connectez-vous</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

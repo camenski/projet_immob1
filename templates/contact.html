@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Contactez-nous</title>
+    <link rel="stylesheet" href="/static/css/contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+
+            <div class="social-icons">
+                <img src="/static/pack photo/logo.png" alt="FIA Immobilier Logo" width="129px" height="90px">
+                <span class="volet">
+                    <a href="/templates/personnaliser_achat.html">Acheter</a>
+                    <a href="/templates/personnaliser_location.html">Louer</a>
+                    <a href="/templates/vendre.html">Vendre</a>
+                    <a href="/templates/annonces.html">Annonces</a>
+                    <a href="/templates/agents.html">Agents</a>
+                </span>
+            </div>
+            <div class="auth-buttons">
+                <div class="menu-propriétés">
+                    <ul>
+                        <li class="menu-deroulant">
+                            <a href="#">Propriétés</a>
+                            <ul class="sous-menu">
+                                <li><a href="/templates/all_properties.html">Toutes</a></li>
+                                <li><a href="/templates/a_vendre.html">Achat</a></li>
+                                <li><a href="/templates/a_louer.html">Location</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="onglet">
+                    <ul>
+                        <li class="onglet-deroulant">
+                            <a href="#">☰</a>
+                            <ul class="sous-onglet">
+                                <li><a href="/index">Accueil</a></li>
+                                <li><a href="/templates/all_properties.html">Propriétés</a></li>
+                                <li><a href="/templates/dossiers.html">Dossier Immobilier</a></li>
+                                <li><a href="/templates/investissements.html">Investissement</a></li>
+                                <li><a href="/templates/contact.html">Contact</a></li>
+                                <li><a href="/templates/apropos.html">A propos de nous</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul>
+                    <li><a href="/templates/estimation.html" class="estimate-button"><i class="fas fa-coins"></i> Estimer votre bien</a></li>
+                    <li><a href="#"><i class="fas fa-heart"></i> Ma sélection</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Mon compte</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <h1>Contactez-nous</h1>
+    <div id="post">
+    <form action="/contact" method="post" >
+        <label for="nom">Nom :</label>
+        <input type="text" name="nom" id="nom" required><br><br>
+
+        <label for="email">Email :</label>
+        <input type="email" name="email" id="email" required><br><br>
+
+        <label for="message">Message :</label><br>
+        <textarea name="message" id="message" rows="5" cols="30" required></textarea><br><br>
+
+        <button type="submit">Envoyer</button>
+    </form>
+    </div>
+</body>
+</html>

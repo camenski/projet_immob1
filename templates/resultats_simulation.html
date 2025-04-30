@@ -1,0 +1,19 @@
+<!-- templates/resultats_simulation.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultat de simulation</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>Résultat de votre simulation</h1>
+    <p>Prix d'achat : {{ prix }} €</p>
+    <p>Loyer mensuel : {{ loyer }} €</p>
+    <p>Charges annuelles : {{ charges }} €</p>
+    <p><strong>Rentabilité brute :</strong> {{ brute }}%</p>
+    <p><strong>Rentabilité nette :</strong> {{ nette }}%</p>
+
+    <a href="/templates/investissements">⬅ Retour</a>
+</body>
+</html>

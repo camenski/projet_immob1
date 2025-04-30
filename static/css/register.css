@@ -1,0 +1,131 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.header-image {
+    text-align: center;
+    margin: 5px 0;
+    margin-bottom: 70px;
+    align-items: center;
+    display: flex;
+}
+
+.logo-entreprise {
+    width: 300px;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.container {
+    width: 100%;
+    height: 30vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 150px;
+    margin-top: 0;
+    padding-top: 50px;
+    flex-direction: row;
+}
+
+.left-section {
+    width: 427px;
+    padding-right: 10px;
+    margin:10px;
+}
+
+
+.left-section h1{
+    margin-left: 300px;
+}
+
+.left-section,
+.right-section {
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    display: block;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+}
+
+.right-section {
+    width: 396px;
+    text-align: center;
+    margin-left: 14%;
+}
+
+.register-form {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 396px;
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    font-size: 17px;
+}
+
+.register-btn {
+    background-color: #42b72a;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 48px;
+    padding: 0 16px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+h1 {
+    font-style: italic;
+    font-family: 'Inria serif', serif;
+    font-size: 22px;
+    width: 249px;
+    height: 50px;
+}
+
+.align-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding-top: 5px;
+    justify-content: center;
+}
+
+p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+}

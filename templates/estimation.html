@@ -1,0 +1,38 @@
+<!-- templates/estimation.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Estimation de votre bien</title>
+    <link rel="stylesheet" href="/static/css/estimation.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="/index"> Accueil</a>
+    <h2>Estimez votre bien immobilier</h2>
+    <form action="/estimation" method="post">
+        <label for="type">Type de bien :</label>
+        <select name="type" required>
+            <option value="maison">Maison</option>
+            <option value="appartement">Appartement</option>
+        </select><br><br>
+
+        <label for="surface">Surface (m²) :</label>
+        <input type="number" name="surface" required><br><br>
+
+        <label for="localisation">Localisation :</label>
+        <input type="text" name="localisation" required><br><br>
+
+        <label for="pieces">Nombre de pièces :</label>
+        <input type="number" name="pieces" required><br><br>
+
+        <button type="submit">Estimer</button>
+    </form>
+
+    {% if estimation %}
+        <h3>Estimation : {{ estimation }} €</h3>
+    {% endif %}
+</body>
+</html>

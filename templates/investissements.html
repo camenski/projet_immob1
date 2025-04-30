@@ -1,0 +1,69 @@
+<!-- templates/investissements.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Investissements immobiliers</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Opportunités d'investissement</h1>
+        <nav>
+            <a href="/">Accueil</a>
+            <a href="/acheter">Acheter</a>
+            <a href="/louer">Louer</a>
+            <a href="/investissements">Investir</a>
+            <a href="/apropos">À propos</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Pourquoi investir avec nous ?</h2>
+            <p>
+                Nous vous accompagnons dans la recherche de biens à fort potentiel locatif ou patrimonial. 
+                Que vous soyez investisseur débutant ou expérimenté, notre équipe vous guide à chaque étape.
+            </p>
+        </section>
+
+        <section>
+            <h2>Nos projets phares</h2>
+            <ul>
+                <li>🏢 Immeuble de rapport – Rentabilité 8%, centre-ville</li>
+                <li>🏠 Maison divisée en studios – Projet en cours de rénovation</li>
+                <li>🌳 Programme neuf – Défiscalisation possible (Pinel, LMNP, etc.)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Besoin de conseils ?</h2>
+            <p>
+                Contactez-nous pour une étude personnalisée de votre projet. 
+                Ensemble, construisons votre patrimoine immobilier !
+            </p>
+        </section>
+
+        <section>
+            <h2>Simulation de rentabilité</h2>
+            <form action="/simulation" method="post">
+                <label for="prix">Prix d'achat (€):</label>
+                <input type="number" id="prix" name="prix" required><br>
+        
+                <label for="loyer">Loyer mensuel (€):</label>
+                <input type="number" id="loyer" name="loyer" required><br>
+        
+                <label for="charges">Charges annuelles (€):</label>
+                <input type="number" id="charges" name="charges" required><br>
+        
+                <button type="submit">Calculer</button>
+            </form>
+        </section>
+        
+    </main>
+
+    <footer>
+        <p>© 2025 Mon Agence Immo. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

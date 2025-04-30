@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annonces Immobilières</title>
+    <link rel="stylesheet" href="/static/css/annonces.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Annonces Immobilières</h1>
+    
+    <form method="get" action="/annonces">
+        <label for="type">Type de bien :</label>
+        <select name="type" id="type">
+            <option value="">--Sélectionner--</option>
+            <option value="acheter">À acheter</option>
+            <option value="louer">À louer</option>
+        </select>
+        
+        <label for="prix_min">Prix minimum :</label>
+        <input type="number" name="prix_min" id="prix_min">
+
+        <label for="prix_max">Prix maximum :</label>
+        <input type="number" name="prix_max" id="prix_max">
+        
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <div class="properties-list">
+        <div class="property">
+            <h3>Exemple de Bien Immobilier</h3>
+            <p>Type : À acheter</p>
+            <p>Prix : 250 000 €</p>
+            <p>Adresse : 123 Rue de l'Exemple, Paris</p>
+        </div>
+        
+        <div class="property">
+            <h3>Autre Bien Immobilier</h3>
+            <p>Type : À louer</p>
+            <p>Prix : 1 200 € / mois</p>
+            <p>Adresse : 456 Avenue du Centre, Lyon</p>
+        </div>
+    </div>
+</body>
+</html>

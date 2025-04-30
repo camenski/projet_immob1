@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier Immobilier - Villa Riviera</title>
+    <link rel="stylesheet" href="/static/css/dossiers.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+
+            <div class="social-icons">
+                <img src="/static/pack photo/logo.png" alt="FIA Immobilier Logo" width="129px" height="90px">
+                <span class="volet">
+                    <a href="/templates/personnaliser_achat.html">Acheter</a>
+                    <a href="/templates/personnaliser_location.html">Louer</a>
+                    <a href="/templates/vendre.html">Vendre</a>
+                    <a href="/templates/annonces.html">Annonces</a>
+                    <a href="/templates/agents.html">Agents</a>
+                </span>
+            </div>
+            <div class="auth-buttons">
+                <div class="menu-propriétés">
+                    <ul>
+                        <li class="menu-deroulant">
+                            <a href="#">Propriétés</a>
+                            <ul class="sous-menu">
+                                <li><a href="/templates/all_properties.html">Toutes</a></li>
+                                <li><a href="/templates/a_vendre.html">Achat</a></li>
+                                <li><a href="/templates/a_louer.html">Location</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="onglet">
+                    <ul>
+                        <li class="onglet-deroulant">
+                            <a href="#">☰</a>
+                            <ul class="sous-onglet">
+                                <li><a href="/index">Accueil</a></li>
+                                <li><a href="/templates/all_properties.html">Propriétés</a></li>
+                                <li><a href="/templates/dossiers.html">Dossier Immobilier</a></li>
+                                <li><a href="/templates/investissements.html">Investissement</a></li>
+                                <li><a href="/templates/contact.html">Contact</a></li>
+                                <li><a href="/templates/apropos.html">A propos de nous</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul>
+                    <li><a href="/templates/estimation.html" class="estimate-button"><i class="fas fa-coins"></i> Estimer votre bien</a></li>
+                    <li><a href="#"><i class="fas fa-heart"></i> Ma sélection</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Mon compte</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="property-container">
+        <h1>Dossier Immobilier - Villa Riviera</h1>
+
+        <div class="property-details">
+            <h2>Informations Générales</h2>
+            <p><strong>Type :</strong> Villa</p>
+            <p><strong>Prix :</strong> 250 000 000 FCFA</p>
+            <p><strong>Adresse :</strong> Riviera 3, Abidjan</p>
+            <p><strong>Surface :</strong> 250 m²</p>
+            <p><strong>Nombre de pièces :</strong> 5</p>
+
+            <h2>Description</h2>
+            <p>Une magnifique villa avec piscine, jardin et terrasse spacieuse. Idéale pour une famille recherchant luxe et tranquillité.</p>
+        
+            <h2>Galerie Photo</h2>
+            <div class="gallery">
+                <img src="/static/pack photo/vue.avif" alt="Photo de la propriété">
+                <img src="/static/pack photo/salon.avif" alt="Photo de la propriété">
+                <img src="/static/pack photo/jardin.avif" alt="Photo de la propriété">
+            </div>
+
+            <h2>Informations Juridiques</h2>
+            <p><strong>Titre foncier :</strong> Oui</p>
+            <p><strong>Charges annuelles :</strong> 300 000 FCFA</p>
+            <p><strong>Taxes :</strong> 2% du prix de vente</p>
+
+            <h2>Propriétaire</h2>
+            <p><strong>Nom :</strong> Jean Dupont</p>
+            <p><strong>Contact :</strong> +225 07 07 07 07</p>
+        </div>
+
+        <a href="/annonces" class="back-link">← Retour aux annonces</a>
+    </div>
+</body>
+</html>

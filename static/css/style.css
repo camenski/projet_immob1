@@ -1,0 +1,399 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    height: 100px;
+    background-color: #fff;
+}
+
+ul {
+    display: flex; /* Organise les éléments en ligne */
+    justify-content: center; /* Centre les éléments horizontalement */
+    gap: 20px; /* Ajoute un espace entre chaque élément */
+    list-style: none; /* Supprime les puces de liste */
+    padding: 0; /* Évite les marges inutiles */
+}
+
+.estimate-button {
+    background-color: #1E9EE3;
+    padding: 10px 15px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+nav {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.logo img {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.social-icons {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.social-icons a {
+    background-color: white;
+    color: black;
+    /* Couleur des icônes */
+    font-size: 24px;
+    /* Taille des icônes */
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: white;
+    /* Change la couleur au survol */
+}
+
+.volet {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    font-style: italic;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 30px;
+    color: #2348C2;
+}
+
+.auth-buttons {
+    height: 100%;
+    list-style: none;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    font-style: italic;
+    color: #2348C2;
+}
+
+.banner {
+    width: 100%;
+    height: 50vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.banner-text p {
+    margin-bottom: 15px;
+}
+
+.banner h1 {
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 50px;
+}
+
+.banner p {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 15px;
+}
+
+.btn {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 16px;
+    margin: auto;
+    width: 115px;
+    /* Largeur du bouton */
+    height: 28px;
+    /* Hauteur du bouton */
+    background-color: red;
+    /* Couleur rouge */
+    color: white;
+    /* Texte blanc */
+    font-weight: bold;
+    /* Texte en gras */
+    text-align: center;
+    /* Centre le texte horizontalement */
+    display: flex;
+    justify-content: center;
+    /* Centre horizontalement */
+    align-items: center;
+    /* Centre verticalement */
+    border: none;
+    /* Supprime les bordures */
+    border-radius: 5px;
+    /* Ajoute des coins arrondis */
+    cursor: pointer;
+    /* Ajoute un effet clic */
+    transition: background-color 0.3s ease;
+    /* Animation fluide */
+}
+
+.btn:hover {
+    background-color: darkred;
+    /* Change en rouge foncé au survol */
+}
+
+.search-options h2 {
+    text-align: center;
+    /* Centre le texte horizontalement */
+    font-size: 20px;
+    /* Taille plus grande */
+    margin-top: 50px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 40px;
+}
+
+.image-container {
+    display: flex;
+    gap: 0px;
+}
+
+.image-wrapper {
+    position: relative;
+    /* Permet de placer l’effet dessus */
+    width: 45%;
+    /* Taille des images */
+    height: auto;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin-left: 50px;
+    display: block;
+    margin: center;
+}
+
+.image-wrapper.achat {
+    position: relative;
+    /* Permet d’ajouter une couche sur l’image */
+}
+
+.image-wrapper.achat img {
+    position: relative;
+    /* Assure que l'effet reste sur l'image */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    filter: opacity(0.8) drop-shadow(0 0 0 #0D16C0);
+    /* Applique la couleur uniquement à l'image */
+}
+
+.image-wrapper {
+    position: relative;
+    /* Permet de positionner le texte sur l'image */
+    display: inline-block;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.image-wrapper h3 {
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    margin-left: auto;
+    font-family: 'Inria Sans', sans-serif;
+    font-style: italic;
+}
+
+.image-wrapper.location {
+    position: relative;
+}
+
+.image-wrapper.location img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    filter: opacity(0.8) drop-shadow(0 0 0 #F90000);
+}
+
+.image-container {
+    margin-bottom: 70px;
+}
+
+.services {
+    text-align: center;
+    /* Centre le texte */
+}
+
+.services h2 {
+    margin-bottom: 40px;
+    /* Augmente l'espace entre le texte et les images */
+    color: #0A1080;
+    font-family: 'Inria Sans', sans-serif;
+    font-style: italic;
+    font-size: 24px;
+}
+
+.service-items {
+    display: flex;
+    /* Aligne les images horizontalement */
+    justify-content: center;
+    /* Centre les images */
+    gap: 15px;
+    /* Ajoute un espace entre elles */
+    justify-content: space-evenly;
+}
+
+.service-item {
+    width: 250px;
+    /* Ajuste la largeur pour garder un bon rendu */
+}
+
+.service-item img {
+    width: 100%;
+    /* Assure que les images remplissent bien leur conteneur */
+    height: auto;
+    border-radius: 15%;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    /* Centre les boîtes horizontalement */
+    gap: 50px;
+    /* Ajoute un espace entre chaque boîte */
+    padding: 20px;
+    background-color: #f8f9fa;
+    /* Couleur légère */
+}
+
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    /* Organise chaque boîte en colonne */
+    align-items: center;
+    /* Centre les éléments */
+    text-align: center;
+    gap: 5px;
+    /* Espacement entre icône, texte et valeur */
+}
+
+.contact-item i {
+    font-size: 30px;
+    /* Taille des icônes */
+    color: #0D16C0;
+    /* Couleur personnalisée */
+}
+
+.contact-item p {
+    font-size: 18px;
+    font-weight: bold;
+    /* Met en valeur le texte */
+    margin: 0;
+}
+
+.contact-item span {
+    font-size: 16px;
+    color: #333;
+}
+
+.contact-info {
+    background-color: #2685E3;
+}
+
+.footer {
+    background-color: #0D16C0;
+    /* Couleur bleue personnalisée */
+    color: white;
+    padding: 30px 20px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* Garde la flexibilité */
+    gap: 40px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.footer-section {
+    flex: 1;
+}
+
+.footer-section h3 {
+    margin-bottom: 15px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin: 5px 0;
+}
+
+.footer-section a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.footer-section p {
+    margin: 5px 0;
+}
+
+.footer-section i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+}

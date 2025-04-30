@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIA Immobilier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/all_properties.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+
+            <div class="social-icons">
+                <img src="/static/pack photo/logo.png" alt="FIA Immobilier Logo" width="129px" height="90px">
+                <span class="volet">
+                    <a href="/templates/personnaliser_achat.html">Acheter</a>
+                    <a href="/templates/personnaliser_location.html">Louer</a>
+                    <a href="/templates/vendre.html">Vendre</a>
+                    <a href="/templates/annonces.html">Annonces</a>
+                    <a href="/templates/agents.html">Agents</a>
+                </span>
+            </div>
+            <div class="auth-buttons">
+                <div class="favorites-container" style="display: none;">
+                    <h2>Mes favoris</h2>
+                    <div class="favorites-grid"></div>
+                </div>
+                
+                <div class="menu-propriétés">
+                    <ul>
+                        <li class="menu-deroulant">
+                            <a href="#">Propriétés</a>
+                            <ul class="sous-menu">
+                                <li><a href="/templates/all_properties.html">Toutes</a></li>
+                                <li><a href="/templates/a_vendre.html">Achat</a></li>
+                                <li><a href="/templates/a_louer.html">Location</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="onglet">
+                    <ul>
+                        <li class="onglet-deroulant">
+                            <a href="#">☰</a>
+                            <ul class="sous-onglet">
+                                <li><a href="/index">Accueil</a></li>
+                                <li><a href="/templates/all_properties.html">Propriétés</a></li>
+                                <li><a href="/templates/dossiers.html">Dossier Immobilier</a></li>
+                                <li><a href="/templates/investissements.html">Investissement</a></li>
+                                <li><a href="/templates/contact.html">Contact</a></li>
+                                <li><a href="/templates/apropos.html">A propos de nous</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul>
+                    <li><a href="/templates/estimation.html" class="estimate-button"><i class="fas fa-coins"></i> Estimer votre bien</a></li>
+                    <li><a href="#"><i class="fas fa-heart"></i> Ma sélection</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Mon compte</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="banner">
+            <img src="/static/pack photo/banner.png" alt="">
+            <h1>Nos propriétés en exclusivité</h1>
+        </div>
+        <section class="properties">
+            <div class="property-grid">
+                <nav class="ligne1">
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/maison1.png" alt="Villa à louer">
+                        <h2>Villa à louer 5 pièces - Bingerville</h2>
+                        <p>Prix : 3 700 000 FCFA/mois</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/terrain1.png" alt="terrain">
+                        <h2>terrain à vendre - Dabakala</h2>
+                        <p>Prix : 50 000 FCFA</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/appartement1.png" alt="Appartement meublé">
+                        <h2>Bel Appartement Meublé - Angré</h2>
+                        <p>Prix : 900 000 FCFA/mois</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/terrain2.png" alt="Terrain à vendre">
+                        <h2>Terrain 838m² - Riviera 4</h2>
+                        <p>Prix : 90 000 000 FCFA</p>
+                    </div>
+                </nav>
+                <nav class="ligne2">
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/appartement2.png" alt="Appartement">
+                        <h2>A louer - San pédro</h2>
+                        <p>Prix : 500 000 FCFA/mois</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/maison2.png" alt="Maison">
+                        <h2>Villa à vendre</h2>
+                        <p>Prix : 100 000 000 FCFA</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/terrain3.png" alt="Terrain à vendre">
+                        <h2>Terrain 838m² - Yamoussoukro</h2>
+                        <p>Prix : 420 000 000 FCFA</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/appartement3.png" alt="Terrain à vendre">
+                        <h2>Terrain 838m² - Riviera 4</h2>
+                        <p>Prix : 420 000 000 FCFA</p>
+                    </div>
+                </nav>
+                <nav class="ligne3">
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/maison3.png" alt="Maison">
+                        <h2>Maison à louer</h2>
+                        <p>Prix : 3 000 000 FCFA/mois</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/appartement4.png" alt="Appartement">
+                        <h2>Appartement à louer - Port-Bouet</h2>
+                        <p>Prix : 400 000 FCFA/mois</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/maison4.png" alt="Maison">
+                        <h2>Maison à vendre - Grand Bassam</h2>
+                        <p>Prix : 420 000 000 FCFA</p>
+                    </div>
+                    <div class="property">
+                        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+                        <img src="/static/pack photo/maison5.png" alt="Maison">
+                        <h2>Maison à louer - Bouaké</h2>
+                        <p>Prix : 20 000 000 FCFA/mois</p>
+                    </div>
+                </nav>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="/templates/index.html">Accueil</a></li>
+                    <li><a href="/templates/all_properties.html">Propriétés</a></li>
+                    <li><a href="/templates/dossiers.html">Dossier Immobilier</a></li>
+                    <li><a href="/templates/investissements.html">Investissements</a></li>
+                    <li><a href="/templates/contact.html">Contact</a></li>
+                    <li><a href="/templates/apropos.html">À propos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +225 01 50 43 70 66</p>
+                <p><i class="fas fa-envelope"></i> fajobiilyas@gmail.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Abidjan, Rivéra M'Badon (Non loin du terminus 78)</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <a href="facebook.com"><i class="fab fa-facebook"></i></a>
+                <a href="x.com"><i class="fab fa-x-twitter"></i></a>
+                <a href="linkedin.com"><i class="fab fa-linkedin"></i></a>
+                <a href="youtube.com"><i class="fab fa-youtube"></i></a>
+            </div>
+            </div>
+        </div>
+        <p class="footer-bottom">&copy;2025 FIA Immobilier - Tous droits réservés</p>
+    </footer>
+    <script>
+       
+                 document.addEventListener("DOMContentLoaded", function () {
+                var favoriteIcons = document.querySelectorAll(".favorite-icon i");
+                var selectionList = document.querySelector(".auth-buttons ul");
+
+                favoriteIcons.forEach(icon => {
+                    icon.addEventListener("click", function () {
+                        var property = this.closest(".property");
+                        var title = property.querySelector("h2").textContent;
+                        var imgSrc = property.querySelector("img").src;
+
+                        // Création de l'élément favori
+                        var favItem = document.createElement("li");
+                        favItem.innerHTML = `<a href="#"><img src="${imgSrc}" width="50" height="50" alt=""> ${title}</a>`;
+                        
+                        // Ajout à la sélection
+                        selectionList.appendChild(favItem);
+                        
+                        // Changer la couleur du cœur pour indiquer la sélection
+                        this.style.color = "red";
+                    });
+                });
+            });
+
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var favoriteIcons = document.querySelectorAll(".favorite-icon i");
+            var selectionButton = document.querySelector(".auth-buttons ul li a[href='#']");
+            var favoritesContainer = document.querySelector(".favorites-container");
+            var favoritesGrid = document.querySelector(".favorites-grid");
+            
+            let selectedProperties = []; // Stockage des favoris
+    
+            // Ajout des favoris au clic sur le cœur
+            favoriteIcons.forEach(icon => {
+                icon.addEventListener("click", function () {
+                    var property = this.closest(".property");
+                    var title = property.querySelector("h2").textContent;
+                    var imgSrc = property.querySelector("img").src;
+    
+                    // Vérifier si le bien est déjà sélectionné
+                    if (!selectedProperties.some(prop => prop.imgSrc === imgSrc)) {
+                        selectedProperties.push({ title, imgSrc });
+                    }
+    
+                    this.style.color = "red"; // Indique qu'il est ajouté
+                });
+            });
+    
+            // Affichage des favoris quand on clique sur "Ma sélection"
+            selectionButton.addEventListener("click", function (event) {
+                event.preventDefault(); // Empêche la redirection
+    
+                // Nettoyage de la grille avant mise à jour
+                favoritesGrid.innerHTML = "";
+    
+                // Ajout des favoris dans la grille
+                selectedProperties.forEach(prop => {
+                    var favItem = document.createElement("div");
+                    favItem.classList.add("favorite-item");
+                    favItem.innerHTML = `<img src="${prop.imgSrc}" width="150" height="150" alt=""><p>${prop.title}</p>`;
+                    favoritesGrid.appendChild(favItem);
+                });
+    
+                favoritesContainer.style.display = "block"; // Affiche la section
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+        var favoriteIcons = document.querySelectorAll(".favorite-icon i");
+        var selectionButton = document.querySelector(".auth-buttons ul li a[href='#']");
+        var favoritesContainer = document.querySelector(".favorites-container");
+        var favoritesGrid = document.querySelector(".favorites-grid");
+        
+        let selectedProperties = []; // Stockage des favoris
+
+        // Fonction pour ajouter ou retirer des favoris
+        favoriteIcons.forEach(icon => {
+            icon.addEventListener("click", function () {
+                var property = this.closest(".property");
+                var title = property.querySelector("h2").textContent;
+                var imgSrc = property.querySelector("img").src;
+
+                var index = selectedProperties.findIndex(prop => prop.imgSrc === imgSrc);
+                
+                if (index === -1) {
+                    // Ajouter aux favoris
+                    selectedProperties.push({ title, imgSrc });
+                    this.style.color = "red"; // Indiquer la sélection
+                } else {
+                    // Retirer des favoris
+                    selectedProperties.splice(index, 1);
+                    this.style.color = ""; // Retour à l’état normal
+                }
+            });
+        });
+
+        // Affichage des favoris quand on clique sur "Ma sélection"
+        selectionButton.addEventListener("click", function (event) {
+            event.preventDefault(); // Empêche la redirection
+
+            // Nettoyage de la grille avant mise à jour
+            favoritesGrid.innerHTML = "";
+
+            // Ajout des favoris dans la grille
+            selectedProperties.forEach(prop => {
+                var favItem = document.createElement("div");
+                favItem.classList.add("favorite-item");
+                favItem.innerHTML = `<img src="${prop.imgSrc}" width="150" height="150" alt=""><p>${prop.title}</p>`;
+                
+                // Suppression au clic sur l’image
+                favItem.addEventListener("click", function () {
+                    selectedProperties = selectedProperties.filter(p => p.imgSrc !== prop.imgSrc);
+                    favItem.remove();
+                    
+                    // Remettre la couleur du cœur à l’état normal
+                    favoriteIcons.forEach(icon => {
+                        var property = icon.closest(".property");
+                        var imgProperty = property.querySelector("img").src;
+                        if (imgProperty === prop.imgSrc) {
+                            icon.style.color = "";
+                        }
+                    });
+                });
+
+                favoritesGrid.appendChild(favItem);
+            });
+
+            favoritesContainer.style.display = "block"; // Affiche la section
+        });
+    });
+    </script>
+    
+</body>
+
+</html>
