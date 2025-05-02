@@ -1,80 +1,78 @@
-import bcrypt
-from fastapi import FastAPI, Request
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Request  # type: ignore
+from fastapi.templating import Jinja2Templates # type: ignore
+from fastapi.responses import HTMLResponse # type: ignore
+from fastapi.staticfiles import StaticFiles # type: ignore
 import json
+from fastapi.templating import Jinja2Templates 
+import smtplib
+import random
 import os
+from email.mime.text import MIMEText
+from fastapi.staticfiles import StaticFiles
+from dotenv import load_dotenv
+import secrets
+import bcrypt
 import traceback
-from fastapi import Form
-from fastapi.responses import RedirectResponse
+from fastapi import Form # type: ignore
+from fastapi.responses import RedirectResponse # type: ignore
 from typing import Optional
-from pydantic import BaseModel
-from fastapi import FastAPI, Request, Form, HTTPException
-from fastapi.responses import RedirectResponse
+import re
+from dotenv import load_dotenv
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+print("Chemin du projet :", BASE_DIR)
+print("Dossiers :", os.listdir(BASE_DIR))  # 🔹 Affiche tous les fichiers/dossiers
+print("Dossiers dans /templates :", os.listdir(os.path.join(BASE_DIR, "templates")))
+templates = Jinja2Templates(directory="templates")  # 🔹 Vérifie que c'est bien "templates"
+
+
+load_dotenv()  # Charge les variables de l'environnement
+EMAIL_SENDER = os.getenv("EMAIL_SENDER")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
+
+# 🔹 Fonction pour envoyer un code de vérification par email
+def send_verification_code(email: str):
+    verification_code = str(random.randint(1000, 9999))  # Génère un code à 4 chiffres
+
+    print("EMAIL_SENDER :", EMAIL_SENDER)
+    print("EMAIL_PASSWORD :", EMAIL_PASSWORD)
+
+
+    msg = MIMEText(f"Votre code de vérification est : {verification_code}")
+    msg["Subject"] = "Réinitialisation de mot de passe"
+    msg["From"] = EMAIL_SENDER
+    msg["To"] = email
+
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()  # Sécurisation de la connexion
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            server.sendmail(EMAIL_SENDER, email, msg.as_string())
+        
+        print("Code envoyé avec succès :", verification_code)
+        return verification_code  # Retourne le code pour la vérification
+    except Exception as e:
+        print("Erreur lors de l'envoi de l'email :", e)
+        return None
+
+def is_valid_email(email: str) -> bool:
+    regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(regex, email) is not None
+
+
+
 app = FastAPI()
 
 # Chemins
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
-
-# Définir l'application FastAPI
-app = FastAPI()
-
-# Monter les fichiers statiques
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 @app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    with open(os.path.join(BASE_DIR, "database", "data.json"), "r") as f:
-        properties = json.load(f)
-    return templates.TemplateResponse("principal.html", {"request": request, "properties": properties})
-
-# 🔹 Route GET pour afficher la page de connexion
-@app.get("/login", response_class=HTMLResponse)
-async def show_login(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
-
-# 🔹 Route POST pour traiter la connexion
-@app.post("/login")
-async def login(request: Request, email: str = Form(...), password: str = Form(...)):
-    users_file = os.path.join(BASE_DIR, "database", "users.json")
-
-    # 🔸 Chargement sécurisé des utilisateurs
-    try:
-        users_file = os.path.join(BASE_DIR, "database", "users.json")
-
-        if os.path.exists(users_file):
-            with open(users_file, "r") as f:
-                users = json.load(f)
-        else:
-            users = []
-
-        user = next((u for u in users if u.get("email") == email), None)
-
-        if user is None or not bcrypt.checkpw(password.encode(), user["password"].encode()):
-            return RedirectResponse(url="/login?message=error", status_code=302)
-
-        session_data = {"user": user["email"]}
-        session_file = os.path.join(BASE_DIR, "database", "session.json")
-        with open(session_file, "w") as f:
-            json.dump(session_data, f)
-
-        return RedirectResponse(url="/index", status_code=302)
-
-    except Exception as e:
-        print("Erreur :", e)
-        print(traceback.format_exc())  # Affiche l'erreur complète dans le terminal
-        return {"error": "Une erreur interne s'est produite."}
-
-    # 🔸 Sauvegarde de session sécurisée
-    session_data = {"user": user["email"]}
-    session_file = os.path.join(BASE_DIR, "database", "session.json")
-    with open(session_file, "w") as f:
-        json.dump(session_data, f)
-
-    return RedirectResponse(url="/index", status_code=302)
-
+async def homepage(request: Request):
+    return templates.TemplateResponse("principal.html", {"request": request})
 
 
 @app.get("/register", response_class=HTMLResponse)
@@ -87,66 +85,250 @@ async def register(
     username: str = Form(...),
     email: str = Form(...),
     password: str = Form(...),
-    confirme_password: str = Form(...)
+    confirm_password: str = Form(...)  # 🔹 Assure-toi qu'il est bien présent ici
 ):
+
     users_file = os.path.join(BASE_DIR, "database", "users.json")
 
-    # Vérification si les mots de passe correspondent
-    if password != confirme_password:
-        return templates.TemplateResponse("register.html", {
-            "request": request,
-            "error": "Les mots de passe ne sont pas identiques"
+    try:
+        # 🔹 Vérifier que l’email est valide (Ajoute cette ligne ici)
+        if not is_valid_email(email):
+            return templates.TemplateResponse("register.html", {
+                "request": request,
+                "error": "Adresse email invalide."
+            })
+
+        # 🔹 Vérifier que les mots de passe correspondent
+        if password != confirm_password:
+            return templates.TemplateResponse("register.html", {
+                "request": request,
+                "error": "Les mots de passe ne correspondent pas."
+            })
+
+        # 🔹 Charger les utilisateurs existants
+        if os.path.exists(users_file):
+            with open(users_file, "r") as f:
+                users = json.load(f)
+        else:
+            users = []
+
+        # 🔹 Vérifier si l'email ou le username existe déjà
+        if any(u["email"] == email or u["username"] == username for u in users):
+            return templates.TemplateResponse("register.html", {
+                "request": request,
+                "error": "Nom d'utilisateur ou email déjà utilisé."
+            })
+
+        # 🔹 Hacher le mot de passe
+        hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+        # 🔹 Ajouter le nouvel utilisateur
+        users.append({
+            "username": username,
+            "email": email,
+            "password": hashed_password
         })
 
-    # Charger les utilisateurs existants
+        # 🔹 Enregistrer dans `users.json`
+        with open(users_file, "w") as f:
+            json.dump(users, f, indent=4)
+
+        # 🔹 Rediriger vers la page de connexion
+        return RedirectResponse(url="/login?message=success", status_code=303)
+
+    except Exception as e:
+        return {"error": f"Une erreur interne s'est produite : {e}"}
+
+
+@app.get("/login", response_class=HTMLResponse)
+async def show_login(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+# 🔹 Route POST pour traiter la connexion
+@app.post("/login")
+async def login(request: Request, email: str = Form(...), password: str = Form(...)):
+    users_file = os.path.join(BASE_DIR, "database", "users.json")
+
+    try:
+        # 🔸 Chargement sécurisé des utilisateurs
+        if os.path.exists(users_file):
+            with open(users_file, "r") as f:
+                users = json.load(f)
+        else:
+            users = []
+        
+        # 🔹 Vérifier si l'utilisateur existe
+        user = next((u for u in users if u.get("email") == email), None)
+
+        if user is None:
+            print("Utilisateur non trouvé :", email)
+            return RedirectResponse(url="/login?message=error", status_code=302)
+
+        # 🔹 Vérifier le format du mot de passe
+        print("Mot de passe stocké :", user["password"])
+        print("Type du mot de passe :", type(user["password"]))
+
+        # 🔹 Assurer que le mot de passe est bien haché
+        if not bcrypt.checkpw(password.encode(), user["password"].encode()):
+            print("Mot de passe incorrect :", password)
+            return RedirectResponse(url="/login?message=error", status_code=302)
+
+        # 🔹 Sauvegarde de session avec cookie
+        response = RedirectResponse(url="/index", status_code=302)
+        response.set_cookie(key="user", value=email)  # Stocke la session utilisateur
+        print("Connexion réussie pour :", email)
+        return response
+
+    except Exception as e:
+        print("Erreur détectée :", e)
+        print(traceback.format_exc())  # Affiche l'erreur complète dans le terminal
+        return {"error": f"Une erreur interne s'est produite : {e}"}
+    
+
+@app.get("/forgot-password", response_class=HTMLResponse)
+async def forgot_password_page(request: Request):
+    return templates.TemplateResponse("forgot_password.html", {"request": request})
+
+@app.post("/reset-password")
+async def reset_password(request: Request, email: str = Form(...)):
+    users_file = os.path.join(BASE_DIR, "database", "users.json")
+
+    # 🔹 Charger les utilisateurs existants
     if os.path.exists(users_file):
         with open(users_file, "r") as f:
             users = json.load(f)
     else:
         users = []
 
-    # Vérifier si l'utilisateur existe déjà
-    for user in users:
-        if user["username"] == username or user.get("email") == email:
-            print("lolololo")
-            return templates.TemplateResponse("register.html", {
-                "request": request,
-                "error": "Nom d'utilisateur ou email déjà utilisé"
-            })
+    user = next((u for u in users if u.get("email") == email), None)
 
-    # Ajouter le nouvel utilisateur
-    users.append({
-        "username": username,
-        "email": email,
-        "password": password  # À sécuriser avec un hachage
+    if user is None:
+        return templates.TemplateResponse("forgot_password.html", {
+            "request": request,
+            "error": "Adresse email introuvable."
+        })
+
+    # 🔹 Générer un token unique (dans une vraie app, on enverrait un email)
+    reset_token = secrets.token_urlsafe(32)
+
+    # 🔹 Sauvegarde du token pour vérifier plus tard
+    reset_file = os.path.join(BASE_DIR, "database", "reset_tokens.json")
+    with open(reset_file, "w") as f:
+        json.dump({email: reset_token}, f)
+
+    # 🔹 Simuler un email en affichant le lien
+    reset_link = f"http://127.0.0.1:8000/new-password?token={reset_token}&email={email}"
+
+    return templates.TemplateResponse("forgot_password.html", {
+        "request": request,
+        "message": f"Lien de réinitialisation généré : {reset_link}"
     })
 
+# 🔹 Route POST : Envoyer le code par email
+@app.post("/send-code")
+async def send_code(request: Request, email: str = Form(...)):
+    users_file = os.path.join(BASE_DIR, "database", "users.json")
+
+    # 🔹 Vérifier si l'utilisateur existe
+    if os.path.exists(users_file):
+        with open(users_file, "r") as f:
+            users = json.load(f)
+    else:
+        users = []
+
+    user = next((u for u in users if u.get("email") == email), None)
+
+    if user is None:
+        return templates.TemplateResponse("forgot_password.html", {
+            "request": request,
+            "error": "Adresse email introuvable."
+        })
+
+    # 🔹 Envoyer le code par email
+    verification_code = send_verification_code(email)
+
+    if not verification_code:
+        return templates.TemplateResponse("forgot_password.html", {
+            "request": request,
+            "error": "Échec d'envoi du code, réessayez plus tard."
+        })
+
+    return templates.TemplateResponse("verify_code.html", {"request": request, "email": email})
+
+# 🔹 Route POST : Vérifier le code entré par l’utilisateur
+@app.post("/verify-code")
+async def verify_code(request: Request, email: str = Form(...), code: str = Form(...)):
+    codes_file = os.path.join(BASE_DIR, "database", "verification_codes.json")
+
+    # 🔹 Charger le fichier des codes
+    if os.path.exists(codes_file):
+        with open(codes_file, "r") as f:
+            codes = json.load(f)
+    else:
+        codes = {}
+
+    if codes.get(email) != code:
+        return templates.TemplateResponse("verify_code.html", {
+            "request": request,
+            "email": email,
+            "error": "Code incorrect. Réessayez."
+        })
+
+    # 🔹 Rediriger vers la page pour réinitialiser le mot de passe
+    return templates.TemplateResponse("new_password.html", {"request": request, "email": email})
+
+# 🔹 Route POST : Réinitialiser le mot de passe après confirmation
+@app.post("/new-password")
+async def update_password(request: Request, email: str = Form(...), new_password: str = Form(...)):
+    users_file = os.path.join(BASE_DIR, "database", "users.json")
+
+    # 🔹 Charger les utilisateurs
+    if os.path.exists(users_file):
+        with open(users_file, "r") as f:
+            users = json.load(f)
+    else:
+        users = []
+
+    user = next((u for u in users if u.get("email") == email), None)
+
+    if user is None:
+        return {"error": "Utilisateur introuvable."}
+
+    # 🔹 Hacher le nouveau mot de passe
+    import bcrypt
+    user["password"] = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
+
+    # 🔹 Sauvegarder le nouveau mot de passe
     with open(users_file, "w") as f:
         json.dump(users, f, indent=4)
 
-    print("uygfygfrdftrd")
+    return RedirectResponse(url="/login?message=password_updated", status_code=303)
 
-    # Rediriger vers la page de connexion
-    return RedirectResponse(url="/index", status_code=302)
 
 @app.get("/index", response_class=HTMLResponse)
-async def homepage(request: Request):
+async def index_page(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/proprietes", response_class=HTMLResponse) 
+
+@app.get("/proprietes", response_class=HTMLResponse)
 async def all_properties(request: Request):
-    with open(os.path.join(BASE_DIR, "database", "data.json"), "r") as f:
-        properties = json.load(f)
-    return templates.TemplateResponse("all_properties.html", {"request": request, "properties": properties})
+    try:
+        with open(os.path.join(BASE_DIR, "database", "data.json"), "r") as f:
+            properties = json.load(f)
+        return templates.TemplateResponse("all_properties.html", {"request": request, "properties": properties})
+    except Exception as e:
+        return {"error": f"Une erreur est survenue : {e}"}
 
 @app.get("/a-vendre", response_class=HTMLResponse)
 async def biens_a_vendre(request: Request):
+    
     with open(os.path.join(BASE_DIR, "database", "data.json"), "r") as f:
         all_properties = json.load(f)
 
     properties = [p for p in all_properties if p.get("statut") == "vente"]
 
     return templates.TemplateResponse("a_vendre.html", {"request": request, "properties": properties})
+    
 
 @app.get("/a-louer", response_class=HTMLResponse)
 async def biens_a_louer(request: Request):
@@ -156,6 +338,194 @@ async def biens_a_louer(request: Request):
     properties = [p for p in all_properties if p.get("statut") == "location"]
 
     return templates.TemplateResponse("a_louer.html", {"request": request, "properties": properties})
+
+
+@app.get("/dossier/{property_id}", response_class=HTMLResponse)
+async def dossier(request: Request, property_id: int):
+    with open(os.path.join(BASE_DIR, "database", "dossiers.json"), "r") as f:
+        dossiers = json.load(f)
+
+    property = next((p for p in dossiers if p.get("id") == property_id), None)
+
+    if not property:
+        return templates.TemplateResponse("404.html", {"request": request})
+
+    return templates.TemplateResponse("dossier.html", {"request": request, "property": property})
+
+
+@app.get("/profil", response_class=HTMLResponse)
+async def profil(request: Request):
+    user_email = request.cookies.get("user")  # 🔹 Lire l'email stocké dans le cookie
+
+    if not user_email:
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Veuillez vous connecter."})
+
+    users_file = os.path.join(BASE_DIR, "database", "users.json")
+
+    if os.path.exists(users_file):
+        with open(users_file, "r", encoding="utf-8") as f:
+            users = json.load(f)
+        
+        user = next((u for u in users if u.get("email") == user_email), None)
+
+        if not user:
+            return templates.TemplateResponse("login.html", {"request": request, "error": "Compte introuvable."})
+
+    else:
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Erreur de session."})
+
+    return templates.TemplateResponse("profil.html", {"request": request, "user": user})
+
+
+@app.get("/annonces", response_class=HTMLResponse)
+async def annonces(request: Request):
+    annonces_file = os.path.join(BASE_DIR, "database", "data.json")
+
+    if os.path.exists(annonces_file):
+        with open(annonces_file, "r") as f:
+            all_properties = json.load(f)
+    else:
+        all_properties = []
+
+    # Filtrer uniquement les annonces validées
+    properties = [p for p in all_properties if p["statut"] == "publié"]
+
+    return templates.TemplateResponse("annonces.html", {"request": request, "properties": properties})
+
+@app.post("/confirmer-annonce/{property_id}")
+async def publier_annonce(property_id: int):  # Nouveau nom pour éviter le conflit
+    annonces_file = os.path.join(BASE_DIR, "database", "data.json")
+
+    if os.path.exists(annonces_file):
+        with open(annonces_file, "r") as f:
+            properties = json.load(f)
+    else:
+        return {"error": "Aucune annonce trouvée"}
+
+    # Modifier le statut de l'annonce ciblée
+    for annonce in properties:
+        if annonce["id"] == property_id:
+            annonce["statut"] = "publié"
+            break
+
+    # Sauvegarder les modifications
+    with open(annonces_file, "w") as f:
+        json.dump(properties, f, indent=4)
+
+    return RedirectResponse(url="/annonces", status_code=303)
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_panel(request: Request):
+    annonces_file = os.path.join(BASE_DIR, "database", "data.json")
+
+    if os.path.exists(annonces_file):
+        with open(annonces_file, "r") as f:
+            all_properties = json.load(f)
+    else:
+        all_properties = []
+
+    # Sélectionner uniquement les annonces en attente
+    pending_annonces = [p for p in all_properties if p["statut"] == "en attente"]
+
+    return templates.TemplateResponse("admin.html", {"request": request, "annonces": pending_annonces})
+
+
+@app.post("/confirmer-annonce/{property_id}")
+async def confirmer_annonce(property_id: int):
+    annonces_file = os.path.join(BASE_DIR, "database", "data.json")
+
+    if os.path.exists(annonces_file):
+        with open(annonces_file, "r") as f:
+            properties = json.load(f)
+    else:
+        return {"error": "Aucune annonce trouvée"}
+
+    # Modifier le statut de l'annonce ciblée
+    for annonce in properties:
+        if annonce["id"] == property_id:
+            annonce["statut"] = "publié"
+            break
+
+    # Sauvegarder les modifications
+    with open(annonces_file, "w") as f:
+        json.dump(properties, f, indent=4)
+
+    return RedirectResponse(url="/admin", status_code=303)
+
+
+
+@app.post("/verifier_fraude")
+async def verifier_fraude(property_id: int):
+    with open("database/dossiers.json", "r") as f:
+        dossiers = json.load(f)
+
+    # Vérifie si la propriété a été vendue plusieurs fois en peu de temps
+    property_data = next((p for p in dossiers if p["id"] == property_id), None)
+
+    if not property_data:
+        return {"erreur": "Propriété introuvable"}
+
+    historique = property_data.get("historique", [])
+
+    if len(historique) > 1:  # Si plusieurs transactions existent
+        return {"alerte": "Vérifier les transactions, vente multiple détectée !", "historique": historique}
+    
+    return {"message": "Aucune fraude détectée"}
+
+@app.get("/historique/{property_id}")
+async def get_historique(property_id: int):
+    historique_file = os.path.join(BASE_DIR, "database", "historique.json")
+
+    if os.path.exists(historique_file):
+        with open(historique_file, "r") as f:
+            historiques = json.load(f)
+    else:
+        return {"error": "Fichier historique introuvable"}
+
+    property_historique = next((h for h in historiques if h["property_id"] == property_id), None)
+
+    if not property_historique:
+        return {"error": "Aucun historique trouvé pour cette propriété"}
+
+    return property_historique
+
+@app.post("/publier-annonce", response_class=HTMLResponse)
+async def publier_annonce(
+    request: Request,
+    titre: str = Form(...),
+    prix: int = Form(...),
+    localisation: str = Form(...),
+    description: str = Form(...),
+    image: str = Form(...)
+):
+    annonces_file = os.path.join(BASE_DIR, "database", "data.json")
+
+    # Charger les annonces existantes
+    if os.path.exists(annonces_file):
+        with open(annonces_file, "r") as f:
+            properties = json.load(f)
+    else:
+        properties = []
+
+    # Ajouter une nouvelle annonce avec un statut "en attente"
+    nouvelle_annonce = {
+        "id": len(properties) + 1,
+        "titre": titre,
+        "prix": prix,
+        "localisation": localisation,
+        "description": description,
+        "image": image,
+        "statut": "en attente"
+    }
+
+    properties.append(nouvelle_annonce)
+
+    # Enregistrer dans le fichier `data.json`
+    with open(annonces_file, "w") as f:
+        json.dump(properties, f, indent=4)
+
+    # Rediriger vers une page de confirmation
+    return RedirectResponse(url="/annonces", status_code=303)
 
 
 @app.get("/personnalisation-achat", response_class=HTMLResponse)
@@ -379,5 +749,73 @@ async def agents(request: Request):
     with open(os.path.join(BASE_DIR, "database", "agents.json"), "r") as f:
         agents_data = json.load(f)
     return templates.TemplateResponse("agents.html", {"request": request, "agents": agents_data})
+@app.get("/", response_class=HTMLResponse)
+async def homepage(request: Request):
+    return templates.TemplateResponse("accueil.html", {"request": request})
 
-print("Routes disponibles :", [route.path for route in app.routes]) # type: ignore
+
+@app.post("/favoris/{property_id}")
+async def add_favorite(request: Request, property_id: int):
+    session_file = os.path.join(BASE_DIR, "database", "session.json")
+    favorites_file = os.path.join(BASE_DIR, "database", "favorites.json")
+
+    # Vérifier si l'utilisateur est connecté
+    if not os.path.exists(session_file):
+        return {"error": "Veuillez vous connecter pour ajouter des favoris."}
+
+    with open(session_file, "r") as f:
+        user = json.load(f)
+
+    user_email = user.get("email")  # Identifiant unique
+
+    # Charger les favoris existants
+    if os.path.exists(favorites_file):
+        with open(favorites_file, "r") as f:
+            all_favorites = json.load(f)
+    else:
+        all_favorites = {}
+
+    # Ajouter la propriété aux favoris de l'utilisateur
+    user_favorites = all_favorites.get(user_email, [])
+    if property_id not in user_favorites:
+        user_favorites.append(property_id)
+
+    # Sauvegarder les favoris mis à jour
+    all_favorites[user_email] = user_favorites
+    with open(favorites_file, "w") as f:
+        json.dump(all_favorites, f)
+
+    return {"message": f"Propriété {property_id} ajoutée aux favoris !"}
+
+@app.get("/mes-favoris", response_class=HTMLResponse)
+async def show_favorites(request: Request):
+    session_file = os.path.join(BASE_DIR, "database", "session.json")
+    favorites_file = os.path.join(BASE_DIR, "database", "favorites.json")
+    properties_file = os.path.join(BASE_DIR, "database", "data.json")
+
+    # Vérifier si l'utilisateur est connecté
+    if not os.path.exists(session_file):
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Veuillez vous connecter."})
+
+    with open(session_file, "r") as f:
+        user = json.load(f)
+
+    user_email = user.get("email")
+
+    # Charger les favoris existants
+    if os.path.exists(favorites_file):
+        with open(favorites_file, "r") as f:
+            all_favorites = json.load(f)
+    else:
+        all_favorites = {}
+
+    user_favorites = all_favorites.get(user_email, [])
+
+    # Charger les propriétés complètes depuis `data.json`
+    with open(properties_file, "r") as f:
+        all_properties = json.load(f)
+
+    favorite_properties = [p for p in all_properties if p.get("id") in user_favorites]
+
+    return templates.TemplateResponse("favorites.html", {"request": request, "favorites": favorite_properties})
+# Cette route récupère les favoris de l'utilisateur et affiche les propriétés

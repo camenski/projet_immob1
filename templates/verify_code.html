@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Vérification du code</title>
+    <link rel="stylesheet" href="/static/css/verify_code.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Vérification du code</h2>
+        <p>Nous avons envoyé un code à 4 chiffres à votre adresse email.</p>
+        <p>Veuillez entrer ce code pour poursuivre la réinitialisation de votre mot de passe.</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form action="/verify-code" method="post">
+            <input type="hidden" name="email" value="{{ email }}">
+            <input type="text" name="code" placeholder="Entrez votre code" required>
+            <button type="submit">Vérifier</button>
+        </form>
+
+        <a href="/forgot-password">Renvoyer un code</a>
+    </div>
+
+</body>
+</html>

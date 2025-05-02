@@ -4,13 +4,13 @@
         "title": "Villa Moderne à Casablanca",
         "price": "2 500 000 MAD",
         "location": "Casablanca",
-        "image": "static/img/villa1.jpg"
+        "image": "static/pack_photo/villa1.jpg"
     },
     {
         "id": 2,
         "title": "Appartement à Marrakech",
         "price": "1 200 000 MAD",
         "location": "Marrakech",
-        "image": "static/img/appartement1.jpg"
+        "image": "static/pack_photo/villa1.jpg"
     }
 ]

@@ -1,0 +1,68 @@
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+
+/* 💠 En-tête */
+
+header {
+    background-color: #2348C2;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+}
+
+
+/* 📌 Section des détails */
+
+.property-details {
+    max-width: 800px;
+    margin: 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+
+/* 🏠 Image de la propriété */
+
+.property-details img {
+    width: 100%;
+    border-radius: 10px;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+
+/* 📜 Informations */
+
+.property-details p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+
+/* 🔄 Bouton de retour */
+
+.property-details a {
+    display: inline-block;
+    background-color: #1E9EE3;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: background 0.3s ease;
+}
+
+.property-details a:hover {
+    background-color: #0056b3;
+}

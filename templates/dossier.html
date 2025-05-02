@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ property.titre }}</title>
+    <link rel="stylesheet" href="/static/css/dossier.css">
+</head>
+
+<body>
+    <header>
+        <h1>{{ property.titre }}</h1>
+    </header>
+
+    <div class="property-details">
+        <img src="{{ property.image }}" alt="{{ property.titre }}">
+        <h1>{{ property.titre }}</h1>
+        <p><strong>Prix :</strong> {{ property.prix }} FCFA</p>
+        <p><strong>Localisation :</strong> {{ property.localisation }}</p>
+        <p><strong>Surface :</strong> {{ property.surface }} m²</p>
+        <p><strong>Pièces :</strong> {{ property.pieces }}</p>
+        <p>{{ property.description }}</p>
+
+        <!-- 🔎 Ajout de l'historique des propriétaires -->
+        <h3>Historique des propriétaires</h3>
+        <ul>
+            {% for transaction in property.historique %}
+            <li>
+                <strong>Date :</strong> {{ transaction.date }}<br>
+                <strong>Vendeur :</strong> {{ transaction.vendeur }}<br>
+                <strong>Acheteur :</strong> {{ transaction.acheteur }}
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- 🚨 Vérification du statut légal -->
+        {% if property.etat_legal == "Litige" %}
+        <p style="color: red;">⚠ Cette propriété est en litige !</p>
+        {% else %}
+        <p style="color: green;">✅ Propriété vérifiée et légale.</p>
+        {% endif %}
+    </div>
+
+
+    <a href="/proprietes">⬅ Retour aux propriétés</a>
+</body>
+
+</html>
