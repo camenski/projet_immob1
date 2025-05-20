@@ -1,9 +1,8 @@
-from fastapi import FastAPI, Request  # type: ignore
-from fastapi.templating import Jinja2Templates # type: ignore
-from fastapi.responses import HTMLResponse # type: ignore
-from fastapi.staticfiles import StaticFiles # type: ignore
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 import json
-from fastapi.templating import Jinja2Templates 
 import smtplib
 import random
 import os
@@ -13,18 +12,40 @@ from dotenv import load_dotenv
 import secrets
 import bcrypt
 import traceback
-from fastapi import Form # type: ignore
-from fastapi.responses import RedirectResponse # type: ignore
+from fastapi import Form 
+from fastapi.responses import RedirectResponse
 from typing import Optional
+from fastapi import FastAPI, Request, Query
+from fastapi.responses import JSONResponse
 import re
-from dotenv import load_dotenv
-import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 print("Chemin du projet :", BASE_DIR)
 print("Dossiers :", os.listdir(BASE_DIR))  # 🔹 Affiche tous les fichiers/dossiers
 print("Dossiers dans /templates :", os.listdir(os.path.join(BASE_DIR, "templates")))
 templates = Jinja2Templates(directory="templates")  # 🔹 Vérifie que c'est bien "templates"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+templates = Jinja2Templates(directory="templates")
+
+
+# Sauvegarde dans simulations.json
+simulations_path = os.path.join(BASE_DIR, "database", "simulations.json")
+
+if os.path.exists(simulations_path):
+    with open(simulations_path, "r") as f:
+        existing_data = json.load(f)
+else:
+    existing_data = []
+
+# Ajout de la nouvelle simulation
+simulation_data = {}  # Define simulation_data with appropriate structure
+existing_data.append(simulation_data)
+
+# Écriture du fichier JSON
+with open(simulations_path, "w") as f:
+    json.dump(existing_data, f, indent=4)
+
 
 
 load_dotenv()  # Charge les variables de l'environnement
@@ -42,12 +63,16 @@ def send_verification_code(email: str):
 
     msg = MIMEText(f"Votre code de vérification est : {verification_code}")
     msg["Subject"] = "Réinitialisation de mot de passe"
+    if not EMAIL_SENDER:
+        raise ValueError("EMAIL_SENDER is not set in the environment variables.")
     msg["From"] = EMAIL_SENDER
     msg["To"] = email
 
     try:
         with smtplib.SMTP("smtp.gmail.com", 587) as server:
             server.starttls()  # Sécurisation de la connexion
+            if EMAIL_PASSWORD is None:
+                raise ValueError("EMAIL_PASSWORD is not set in the environment variables.")
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)
             server.sendmail(EMAIL_SENDER, email, msg.as_string())
         
@@ -64,6 +89,9 @@ def is_valid_email(email: str) -> bool:
 
 
 app = FastAPI()
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, "database", "data.json")
 
 # Chemins
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -318,6 +346,19 @@ async def all_properties(request: Request):
         return templates.TemplateResponse("all_properties.html", {"request": request, "properties": properties})
     except Exception as e:
         return {"error": f"Une erreur est survenue : {e}"}
+    
+@app.get("/acheter/{property_id}", response_class=HTMLResponse)
+async def acheter_propriete_details(request: Request, property_id: int):
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        all_properties = json.load(f)
+
+     # Trouver la propriété sélectionnée
+    property_info = next((p for p in all_properties if p["id"] == property_id), None)
+
+    if not property_info:
+        return templates.TemplateResponse("erreur.html", {"request": request, "message": "Propriété introuvable."})
+
+    return templates.TemplateResponse("achat.html", {"request": request, "property": property_info})
 
 @app.get("/a-vendre", response_class=HTMLResponse)
 async def biens_a_vendre(request: Request):
@@ -393,7 +434,7 @@ async def annonces(request: Request):
     return templates.TemplateResponse("annonces.html", {"request": request, "properties": properties})
 
 @app.post("/confirmer-annonce/{property_id}")
-async def publier_annonce(property_id: int):  # Nouveau nom pour éviter le conflit
+async def confirmer_publication(property_id: int):  # Nouveau nom pour éviter le conflit
     annonces_file = os.path.join(BASE_DIR, "database", "data.json")
 
     if os.path.exists(annonces_file):
@@ -527,36 +568,75 @@ async def publier_annonce(
     # Rediriger vers une page de confirmation
     return RedirectResponse(url="/annonces", status_code=303)
 
+@app.get("/recherche-achat", response_class=HTMLResponse)
+async def show_recherche_achat(request: Request):
+    return templates.TemplateResponse("recherche_achat.html", {"request": request})
 
-@app.get("/personnalisation-achat", response_class=HTMLResponse)
-async def personnalisation_achat_get(request: Request):
-    return templates.TemplateResponse("personnalisation_achat.html", {"request": request})
-
-@app.post("/personnalisation-achat", response_class=HTMLResponse)
-async def personnalisation_achat_post(
+@app.get("/api/recherche-achat")
+async def rechercher_proprietes(
     request: Request,
-    type: str = Form(...),
-    budget: int = Form(...),
-    localisation: str = Form(...),
-    surface: int = Form(...),
-    pieces: int = Form(...)
+    type: str = Query(None, description="Type de bien"),
+    budget: int = Query(0, description="Budget maximum"),
+    localisation: str = Query(None, description="Localisation"),
+    surface: int = Query(0, description="Surface minimum"),
+    pieces: int = Query(0, description="Nombre de pièces minimum")
 ):
-    # Tu peux ici sauvegarder dans un fichier JSON ou faire des traitements
-    data = {
-        "type": type,
-        "budget": budget,
-        "localisation": localisation,
-        "surface": surface,
-        "pieces": pieces
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        all_properties = json.load(f)
+
+    matching_properties = [
+        p for p in all_properties
+        if p.get("statut") == "vente"
+        and p.get("price") <= budget
+        and p.get("surface") >= surface
+        and p.get("pieces") >= pieces
+        and (type is None or p.get("type") == type)
+        and (localisation is None or localisation.lower() in p.get("location").lower())
+    ]
+
+    return JSONResponse(content={"resultats": matching_properties})
+
+@app.get("/acheter/{property_id}", response_class=HTMLResponse)
+async def acheter_propriete(request: Request, property_id: int):
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        all_properties = json.load(f)
+
+    # Trouver la propriété sélectionnée
+    property_info = next((p for p in all_properties if p["id"] == property_id), None)
+
+    if not property_info:
+        return templates.TemplateResponse("erreur.html", {"request": request, "message": "Propriété introuvable."})
+
+    return templates.TemplateResponse("achat.html", {"request": request, "property": property_info})
+
+@app.post("/finaliser-achat/{property_id}")
+async def finaliser_achat(request: Request, property_id: int):
+    form_data = await request.form()
+
+    # Enregistrer l'achat
+    achat_info = {
+        "property_id": property_id,
+        "nom": form_data.get("nom"),
+        "email": form_data.get("email"),
+        "telephone": form_data.get("telephone")
     }
-    # Enregistre dans un fichier temporaire par exemple
-    with open(os.path.join(BASE_DIR, "database", "personnalisation_achat.json"), "w") as f:
-        json.dump(data, f, indent=4)
-    
-    return templates.TemplateResponse("personnalisation_achat.html", {
-        "request": request,
-        "message": "Préférences enregistrées avec succès !"
-    })
+
+    achat_file = os.path.join(BASE_DIR, "database", "achats.json")
+
+    if os.path.exists(achat_file):
+        with open(achat_file, "r", encoding="utf-8") as f:
+            achats = json.load(f)
+    else:
+        achats = []
+
+    achats.append(achat_info)
+
+    with open(achat_file, "w", encoding="utf-8") as f:
+        json.dump(achats, f)
+
+    return templates.TemplateResponse("confirmation_achat.html", {"request": request, "property_id": property_id})
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/personnalisation-location", response_class=HTMLResponse)
 async def personnalisation_location_get(request: Request):
@@ -624,7 +704,7 @@ async def contact_post(
     })
 
 @app.get("/profil", response_class=HTMLResponse)
-async def profil(request: Request):
+async def profil_session(request: Request):
     session_file = os.path.join(BASE_DIR, "database", "session.json")
 
     if os.path.exists(session_file):
@@ -648,8 +728,8 @@ async def logout():
     # Redirection vers la page de login avec un message
     return RedirectResponse(url="/login?message=deconnected", status_code=302)
 
-@app.get("/annonces", response_class=HTMLResponse)
-async def annonces(request: Request, type: Optional[str] = None, prix_min: int = 0, prix_max: int = 1000000):
+@app.get("/annonces-filtrees", response_class=HTMLResponse)
+async def annonces_filtrees(request: Request, type: Optional[str] = None, prix_min: int = 0, prix_max: int = 1000000):
     # Charger les données des propriétés
     with open(os.path.join(BASE_DIR, "database", "data.json"), "r") as f:
         properties = json.load(f)
@@ -665,7 +745,7 @@ async def annonces(request: Request, type: Optional[str] = None, prix_min: int =
     return templates.TemplateResponse("annonces.html", {"request": request, "properties": properties})
 
 @app.get("/dossier/{property_id}", response_class=HTMLResponse)
-async def dossier(request: Request, property_id: int):
+async def dossier_details(request: Request, property_id: int):
     # Charger les données des dossiers immobiliers
     with open(os.path.join(BASE_DIR, "database", "dossiers.json"), "r") as f:
         dossiers = json.load(f)
@@ -679,8 +759,9 @@ async def dossier(request: Request, property_id: int):
     return templates.TemplateResponse("dossier.html", {"request": request, "property": property})
 
 @app.get("/estimation", response_class=HTMLResponse)
-async def estimation_form(request: Request):
+async def estimation(request: Request):
     return templates.TemplateResponse("estimation.html", {"request": request})
+
 
 @app.post("/estimation", response_class=HTMLResponse)
 async def estimation_result(request: Request,
@@ -688,17 +769,46 @@ async def estimation_result(request: Request,
                             surface: int = Form(...),
                             localisation: str = Form(...),
                             pieces: int = Form(...)):
-    # Estimation simplifiée : base + surface * coefficient
-    base_price = 1000
-    coefficient = 30 if type == "maison" else 25
-    localisation_factor = 1.2 if "paris" in localisation.lower() else 1.0
+    
+    # 🔹 Prix moyen du terrain par localisation en Côte d'Ivoire
+    prix_terrain = {
+        "plateau": 1000000,
+        "marcory": 892000,
+        "cocody": 241569,
+        "bingerville": 62358,
+        "assinie": 90445,
+        "yamoussoukro": 45537
+    }
 
-    estimation = int((base_price + surface * coefficient + pieces * 500) * localisation_factor)
+    # 🔹 Prix moyen de construction par m² (maison ou appartement)
+    prix_construction_m2 = {
+        "maison": 350000,   # Prix moyen de construction d'une maison par m²
+        "appartement": 400000  # Prix moyen au m² pour un appartement
+    }
+
+    # 📌 Détermination du prix du bien immobilier
+    localisation_factor = prix_terrain.get(localisation.lower(), 45000)  # Valeur par défaut si localisation inconnue
+    prix_construction = prix_construction_m2.get(type.lower(), 250000)   # Valeur par défaut si type inconnu
+
+    if type.lower() == "terrain":
+        # 🏞 Estimation uniquement du prix du terrain
+        estimation = localisation_factor * surface
+    else:
+        # 🏡 Estimation du coût total (terrain + construction)
+        prix_terrain_total = localisation_factor * (surface * 0.5)  # Supposons que le terrain est 50% plus grand que la maison
+        prix_construction_total = prix_construction * surface
+        estimation = prix_terrain_total + prix_construction_total
+
+    # 📌 Calcul de l'impôt foncier (0.5% de la base imposable)
+    base_imposable = estimation * 0.5
+    impot_foncier = base_imposable * 0.005
 
     return templates.TemplateResponse("estimation.html", {
         "request": request,
-        "estimation": estimation
+        "estimation": "{:,.0f}".format(estimation) + " FCFA",
+        "impot_foncier": "{:,.0f}".format(impot_foncier) + " FCFA"
     })
+
 
 @app.get("/apropos", response_class=HTMLResponse)
 async def apropos(request: Request):
@@ -744,13 +854,23 @@ async def simulation(request: Request, prix: float = Form(...), loyer: float = F
         "nette": round(rentabilite_nette, 2)
     })
 
+@app.post("/api/simulation")
+async def calculer_rentabilite(request: Request,
+    prix: float = Form(...),
+    loyer: float = Form(...),
+    charges: float = Form(...),
+    surface: float = Form(...)
+):
+    print(f"Reçu: prix={prix}, loyer={loyer}, charges={charges}, surface={surface}")  # 🔍 Ajoute ceci
+
+
 @app.get("/agents", response_class=HTMLResponse)
 async def agents(request: Request):
     with open(os.path.join(BASE_DIR, "database", "agents.json"), "r") as f:
         agents_data = json.load(f)
     return templates.TemplateResponse("agents.html", {"request": request, "agents": agents_data})
 @app.get("/", response_class=HTMLResponse)
-async def homepage(request: Request):
+async def accueil_page(request: Request):
     return templates.TemplateResponse("accueil.html", {"request": request})
 
 

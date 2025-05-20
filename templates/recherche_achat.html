@@ -14,9 +14,9 @@
         <nav>
 
             <div class="social-icons">
-                <img src="/static/pack photo/logo.png" alt="FIA Immobilier Logo" width="129px" height="90px">
+                <img src="/static/pack_photo/logo.png" alt="FIA Immobilier Logo" width="129px" height="90px">
                 <span class="volet">
-                    <a href="/personnalisation-achat">Acheter</a>
+                    <a href="/recherche-achat">Acheter</a>
                     <a href="/personnalisation-location">Louer</a>
                     <a href="#">Vendre</a>
                     <a href="/annonces">Annonces</a>
@@ -61,10 +61,10 @@
         </nav>
     </header>
     <div class="container">
-        <img src="/static/pack photo/taf1.avif" alt="photo">
+        <img src="/static/pack_photo/taf1.avif"  alt="photo">
         <div class="content">
             <h1>Personnalisez votre recherche de bien à acheter</h1>
-            <form action="/personnalisation-achat" method="post">
+            <form action="/recherche-achat" id="searchForm" method="get">
                 <label for="type">Type de bien:</label>
                 <select name="type" id="type">
                     <option value="maison">Maison</option>
@@ -72,22 +72,59 @@
                     <option value="terrain">Terrain</option>
                     <option value="villa">Villa</option>
                 </select>
-
+            
                 <label for="budget">Budget maximum (XOF):</label>
                 <input type="number" name="budget" id="budget">
-
                 <label for="localisation">Localisation:</label>
                 <input type="text" name="localisation" id="localisation">
-
                 <label for="surface">Surface minimale (m²):</label>
                 <input type="number" name="surface" id="surface">
-
                 <label for="pieces">Nombre minimum de pièces:</label>
                 <input type="number" name="pieces" id="pieces">
-
-                <button type="submit">Enregistrer</button>
+                <button type="submit">Rechercher</button>
             </form>
+            
+            <div id="results"></div>
         </div>
     </div>
+    <script>
+        document.getElementById("searchForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // 🔹 Empêche le rechargement de la page
+        
+            let formData = new FormData(event.target);
+            let queryParams = new URLSearchParams(formData).toString();
+        
+            console.log("Requête envoyée :", queryParams);  // 🔹 Vérifier ce qui est envoyé dans la console
+        
+            fetch(`/api/recherche-achat?${queryParams}`)
+            .then(response => response.json())
+            .then(data => {
+                let resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "<h2>Résultats :</h2>";
+        
+                if (data.resultats.length === 0) {
+                    resultsDiv.innerHTML += "<p>Aucune propriété ne correspond à vos critères.</p>";
+                } else {
+                    data.resultats.forEach(property => {
+                        resultsDiv.innerHTML += `
+                            <div class="property">
+                                <h3>${property.title}</h3>
+                                <p>Prix: ${property.price} XOF</p>
+                                <p>Localisation: ${property.location}</p>
+                                <p>Surface: ${property.surface} m²</p>
+                                <p>Pièces: ${property.pieces}</p>
+                                <img src="${property.image}" alt="Image du bien">
+                                
+                                <!-- 🔹 Bouton Acheter -->
+                                <a href="/acheter/${property.id}" class="buy-button">Acheter</a>
+                            </div>
+                        `;
+                    });
+                }
+            })
+            .catch(error => console.error("Erreur:", error));
+        });
+        </script>
+        
 </body>
 </html>

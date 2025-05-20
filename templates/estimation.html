@@ -8,31 +8,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
-</head>
-<body>
-    <a href="/index"> Accueil</a>
-    <h2>Estimez votre bien immobilier</h2>
-    <form action="/estimation" method="post">
-        <label for="type">Type de bien :</label>
-        <select name="type" required>
-            <option value="maison">Maison</option>
-            <option value="appartement">Appartement</option>
-        </select><br><br>
+    <script>
+        function calculer() {
+            let formData = new FormData(document.getElementById("simulationForm"));
 
-        <label for="surface">Surface (m²) :</label>
-        <input type="number" name="surface" required><br><br>
-
-        <label for="localisation">Localisation :</label>
-        <input type="text" name="localisation" required><br><br>
-
-        <label for="pieces">Nombre de pièces :</label>
-        <input type="number" name="pieces" required><br><br>
-
-        <button type="submit">Estimer</button>
-    </form>
-
-    {% if estimation %}
-        <h3>Estimation : {{ estimation }} €</h3>
-    {% endif %}
-</body>
-</html>
+            for (var pair of formData.entries()) {
+                    console.log(pair[0]+ ': ' + pair[1]);  // 🔍 Ajoute ceci pour vérifier les valeurs envoyées
+                }
+    
+            fetch("/api/simulation", { method: "POST", body: formData })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Réponse reçue:", data);
+                document.getElementById("result").innerHTML = `
+                    <h2>Résultats :</h2>
+                    <p><strong>Prix d'achat :</strong> ${data.prix} FCFA</p>
+                    <p><strong>Loyer mensuel :</strong> ${data.loyer} FCFA</p>
+                    <p><strong>Charges annuelles :</strong> ${data.charges} FCFA</p>
+                    <p><strong>Rentabilité brute :</strong> ${data.rentabilite_brute}%</p>
+                    <p><strong>Rentabilité nette :</strong> ${data.rentabilite_nette}%</p>
+                    <p><strong>Impôt foncier annuel :</strong> ${data.impot_foncier} FCFA</p>
+                `;
+            })
+            .catch(error => console.error("Erreur:", error));
+        }
+        </script>
+        
+    </head>
+    <body>
+        <h1>Estimation en temps réel</h1>
+    
+        <form id="simulationForm">
+            <label>Prix d'achat (FCFA) :</label>
+            <input type="number" name="prix" required>
+    
+            <label>Loyer mensuel (FCFA) :</label>
+            <input type="number" name="loyer" required>
+    
+            <label>Charges annuelles (FCFA) :</label>
+            <input type="number" name="charges" required>
+    
+            <label>Superficie (m²) :</label>
+            <input type="number" name="surface" required>
+    
+            <button type="button" onclick="calculer()">Estimer</button>
+        </form>
+    
+        <div id="result"></div>
+    </body>
+    </html>

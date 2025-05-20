@@ -1,0 +1,55 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Conteneur principal */
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+/* Titres */
+h1 {
+    font-size: 24px;
+    color: #004d99;
+}
+
+/* Texte des résultats */
+p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Rentabilité */
+strong {
+    color: #007acc;
+}
+
+/* Bouton retour */
+a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #007acc;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+a:hover {
+    background-color: #004d99;
+}
